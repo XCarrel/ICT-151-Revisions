@@ -17,7 +17,9 @@ if (isset($_POST["store"])) {
 }
 
 $students = selectMany("Select * from person where role=0", []);
-$evals = selectMany("Select * from evaluation", []);
+$evals = selectMany("Select testDescription, moduleShortName from evaluation 
+	inner join moduleinstance on fkModuleInstance = idModuleInstance 
+    inner join module on fkModule = idModule", []);
 ?>
 
 <div>
@@ -27,7 +29,7 @@ $evals = selectMany("Select * from evaluation", []);
     <form method="post">
         Evaluation: <select name="idEval">
             <?php foreach ($evals as $eval) { ?>
-                <option value="<?= $eval['idEvaluation'] ?>"><?= $eval['testDescription'] ?></option>
+                <option value="<?= $eval['idEvaluation'] ?>"><?= $eval['testDescription'] ?>, module <?= $eval['moduleShortName'] ?></option>
             <?php } ?>
         </select>
         <br>
